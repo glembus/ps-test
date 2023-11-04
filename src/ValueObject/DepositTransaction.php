@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class DepositTransaction
+final class DepositTransaction extends Transaction
 {
 
 }

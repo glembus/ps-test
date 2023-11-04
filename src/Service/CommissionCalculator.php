@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Service\CurrencyExchange;
+namespace App\Service;
 
+use App\Service\CurrencyExchange\CurrencyExchangeService;
 use App\ValueObject\TransactionInterface;
 
-class CommissionCalculator
+final class CommissionCalculator
 {
+    public function __construct(private readonly CurrencyExchangeService $exchangeService)
+    {
+    }
+
     public function calculateCommissionFee(TransactionInterface $transaction): float
     {
 

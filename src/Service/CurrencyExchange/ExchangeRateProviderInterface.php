@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Service\CurrencyExchange\Provider;
-
-use App\Service\CurrencyExchange\ExchangeRateCollection;
-use App\ValueObject\ExchangeRate;
+namespace App\Service\CurrencyExchange;
 
 interface ExchangeRateProviderInterface
 {
-    public function getExchangeRates(string $currency): ExchangeRateCollection;
+    public function getExchangeRates(): ExchangeRateCollection;
 }

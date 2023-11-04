@@ -2,30 +2,41 @@
 
 namespace App\Service\CurrencyExchange\Provider;
 
+use App\Service\CurrencyExchange\ExchangeRateCollection;
+use App\Service\CurrencyExchange\ExchangeRateProviderInterface;
+use App\ValueObject\ExchangeRate;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ExternalProvider
+final class ExternalExchangeRateProvider implements ExchangeRateProviderInterface
 {
-    private array $rates = [];
+    private ExchangeRateCollection $rates;
 
     private bool $rateLoaded = false;
 
-    public function __construct(private HttpClientInterface $httpClient ,private string $currencyExchangeRateUrl)
-    {
+    public function __construct(
+        private readonly HttpClientInterface $httpClient,
+        private readonly string $currencyExchangeRateUrl
+    ) {
+
     }
 
-    private function getRates(): array
+    public function getExchangeRates(): ExchangeRateCollection
     {
-        if (!$this->rateLoaded) {
-            $this->loadRates();
-        }
+        $this->loadRates();
 
         return $this->rates;
     }
 
-    private function loadRates(): array
+    private function loadRates(): void
     {
-        $this->rates = $this->httpClient->request('GET', $this->currencyExchangeRateUrl)->toArray();
-        $this->rateLoaded = true;
+        if (!$this->rateLoaded) {
+            $response = $this->httpClient->request('GET', $this->currencyExchangeRateUrl)->toArray();
+            $this->rates = new ExchangeRateCollection($response['base'], $response['date']);
+            foreach ($response['rates'] as $currency => $rate) {
+                $this->rates->addExchangeRate(new ExchangeRate($rate, $currency));
+            }
+
+            $this->rateLoaded = true;
+        }
     }
 }

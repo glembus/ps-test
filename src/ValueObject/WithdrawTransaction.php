@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class WithdrawTransaction
+final class WithdrawTransaction extends Transaction
 {
 
 }

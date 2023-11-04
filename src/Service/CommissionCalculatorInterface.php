@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\CurrencyExchange;
+namespace App\Service;
 
 use App\ValueObject\TransactionInterface;
 

@@ -2,10 +2,29 @@
 
 namespace App\ValueObject;
 
-class Transaction implements TransactionInterface
+abstract class Transaction implements TransactionInterface
 {
-    public function __construct(private readonly float $value, private readonly string $currency)
+    public function __construct(
+        private readonly float $value,
+        private readonly string $currency,
+        private readonly string $clientType,
+    )
     {
+    }
+
+    public function getClientType(): string
+    {
+        return $this->clientType;
+    }
+
+    public function isBusinessClient(): bool
+    {
+        return self::CLIENT_BUSiNESS === $this->clientType;
+    }
+
+    public function isPrivateClient(): bool
+    {
+        return self::CLIENT_PRIVATE === $this->clientType;
     }
 
     public function getCurrency(): string
@@ -20,7 +39,11 @@ class Transaction implements TransactionInterface
 
     public function convert(ExchangeRate $rate): Transaction
     {
-        return new Transaction($this->value * $rate->getRate(), $rate->getCurrency());
+        if ($rate->getCurrency() === $this->currency) {
+            return $this;
+        }
+
+        return new static($this->value * $rate->getRate(), $rate->getCurrency());
     }
 
     public function __toString(): string
