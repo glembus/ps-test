@@ -4,7 +4,7 @@ namespace App\Service\CurrencyExchange\Provider;
 
 use App\Service\CurrencyExchange\ExchangeRateCollection;
 use App\Service\CurrencyExchange\ExchangeRateProviderInterface;
-use App\ValueObject\ExchangeRate;
+use App\Service\DataTransferObject\ExchangeRate;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ExternalExchangeRateProvider implements ExchangeRateProviderInterface
@@ -17,7 +17,6 @@ final class ExternalExchangeRateProvider implements ExchangeRateProviderInterfac
         private readonly HttpClientInterface $httpClient,
         private readonly string $currencyExchangeRateUrl
     ) {
-
     }
 
     public function getExchangeRates(): ExchangeRateCollection

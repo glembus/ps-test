@@ -2,7 +2,7 @@
 
 namespace App\Service\CurrencyExchange;
 
-use App\ValueObject\ExchangeRate;
+use App\Service\DataTransferObject\ExchangeRate;
 
 final class ExchangeRateCollection
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ValueObject;
+namespace App\Service\DataTransferObject;
 
 final class ExchangeRate
 {
