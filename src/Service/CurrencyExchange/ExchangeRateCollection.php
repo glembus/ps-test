@@ -8,10 +8,13 @@ final class ExchangeRateCollection
 {
     private \ArrayIterator $rates;
 
+    private readonly \DateTime $date;
+
     public function __construct(
         private readonly string $baseCurrency = 'EUR',
-        private readonly \DateTimeImmutable $date = new \DateTimeImmutable()
+        string $date,
     ) {
+        $this->date = date_create_from_format('Y-m-d', $date);
         $this->rates = new \ArrayIterator();
     }
 
@@ -32,7 +35,7 @@ final class ExchangeRateCollection
         throw new \Exception('Invalid currency provided');
     }
 
-    public function getDate(): \DateTimeImmutable
+    public function getDate(): \DateTime
     {
         return $this->date;
     }

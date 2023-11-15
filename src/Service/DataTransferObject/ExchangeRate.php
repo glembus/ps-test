@@ -6,7 +6,7 @@ final class ExchangeRate
 {
     public function __construct(private readonly float $rate, private readonly string $currency) {}
 
-    public function getRate(): float
+    public function getRate(bool $inverseConversation = false): float
     {
         return $this->rate;
     }

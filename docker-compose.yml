@@ -8,5 +8,5 @@ services:
     volumes:
       - ./:/var/www/html
     environment:
-      - PHP_IDE_CONFIG=localhost=localhost
-      - XDEBUG_CONFIG=remote_host=host.docker.internal
+      - PHP_IDE_CONFIG=serverName=localhost
+      - XDEBUG_CONFIG=client_host=host.docker.internal

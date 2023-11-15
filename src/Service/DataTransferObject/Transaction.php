@@ -2,11 +2,9 @@
 
 namespace App\Service\DataTransferObject;
 
-class Transaction implements TransactionInterface
+final class Transaction implements TransactionInterface
 {
     public static $availableTypes = [self::TYPE_BUSINESS, self::TYPE_PRIVATE];
-
-    private \DateTime $date;
 
     public function __construct(
         private readonly string $type,
@@ -14,10 +12,9 @@ class Transaction implements TransactionInterface
         private readonly float $value,
         private readonly string $currency,
         private readonly string $direction,
-        string $date
+        private readonly \DateTime $date,
     )
     {
-        $this->date = date_create_from_format('Y-m-d', $date);
     }
 
     public function getUserId(): int
@@ -56,7 +53,7 @@ class Transaction implements TransactionInterface
             return $this;
         }
 
-        return new static(
+        return new self(
             type: $this->type,
             userId: $this->userId,
             value: $this->value * $rate->getRate(),

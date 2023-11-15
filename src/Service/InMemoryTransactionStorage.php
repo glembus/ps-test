@@ -29,12 +29,11 @@ final class InMemoryTransactionStorage implements TransactionStorageInterface
     {
         $this->validateStorageForDate($date->format('W'));
 
-        $statistics = $this->transactionCollection->offsetGet($userId);
-        if (false === $statistics) {
-            $statistics = new UserWeekTransactionStatistic();
+        if (!$this->transactionCollection->offsetExists($userId)) {
+            $this->updateUserWeekTransactionsStatistic($userId, new UserWeekTransactionStatistic());
         }
 
-        return $statistics;
+        return $this->transactionCollection->offsetGet($userId);
     }
 
     public function updateUserWeekTransactionsStatistic(int $userId, UserWeekTransactionStatistic $statistic): void

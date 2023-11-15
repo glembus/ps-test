@@ -10,10 +10,16 @@
         "symfony/config": "^6.3",
         "symfony/console": "5.4.*",
         "symfony/dependency-injection": "^6.3",
+        "symfony/dotenv": "^6.3",
         "symfony/framework-bundle": "^6.3",
         "symfony/http-client": "^6.3",
         "symfony/runtime": "^6.3",
         "symfony/yaml": "5.4.*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.38",
+        "phpstan/phpstan": "^1.10",
+        "symfony/test-pack": "^1.1"
     },
     "config": {
         "allow-plugins": {
@@ -53,10 +59,5 @@
             "allow-contrib": false,
             "require": "5.4.*"
         }
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.38",
-        "phpstan/phpstan": "^1.10",
-        "symfony/test-pack": "^1.1"
     }
 }

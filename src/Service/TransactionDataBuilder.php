@@ -7,7 +7,7 @@ use App\Service\DataTransferObject\TransactionInterface;
 
 class TransactionDataBuilder
 {
-    private ?\DateTimeImmutable $date;
+    private ?\DateTime $date;
 
     private string $userId = '';
 
@@ -33,7 +33,7 @@ class TransactionDataBuilder
         return $this;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    public function setDate(\DateTime $date): self
     {
         $this->date = $date;
 

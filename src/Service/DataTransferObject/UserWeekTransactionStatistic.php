@@ -4,6 +4,8 @@ namespace App\Service\DataTransferObject;
 
 class UserWeekTransactionStatistic
 {
+    private const WITHDRAW_ATTEMPT_LIMIT = 3;
+
     private float $withdrawnSum = 0.0;
 
     private int $withdrawAttempts = 0;
@@ -14,6 +16,21 @@ class UserWeekTransactionStatistic
         ++$this->withdrawAttempts;
 
         return $this;
+    }
+
+    public function isUserReachWithdrawAttemptLimit(): bool
+    {
+        return $this->withdrawAttempts >= self::WITHDRAW_ATTEMPT_LIMIT;
+    }
+
+    public function getWithdrawAttempts(): int
+    {
+        return $this->withdrawAttempts;
+    }
+
+    public function getWithdrawnSum(): float
+    {
+        return $this->withdrawnSum;
     }
 
     public function isWithdrawFeeCanBeCharged(float $withdrawSum): bool

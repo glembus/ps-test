@@ -15,7 +15,7 @@ class CsvDataAdapter implements DataAdapterInterface
 
         $transactionBuilder = new TransactionDataBuilder();
         $transactionBuilder
-            ->setDate($transactionData[0])
+            ->setDate(date_create_from_format('Y-m-d', $transactionData[0]))
             ->setUserId($transactionData[1])
             ->setType($transactionData[2])
             ->setDirection($transactionData[3])
