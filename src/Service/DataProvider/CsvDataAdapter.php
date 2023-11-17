@@ -21,7 +21,7 @@ class CsvDataAdapter implements DataAdapterInterface
             ->setDirection($transactionData[3])
             ->setValue($transactionData[4])
             ->setCurrency($transactionData[5])
-            ;
+        ;
 
         return $transactionBuilder->build();
     }

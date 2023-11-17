@@ -12,14 +12,14 @@ class DepositFeeCalculator extends AbstractFeeCalculator
     {
     }
 
-    public function calculateCommissionFee(
-        UserWeekTransactionStatistic $statistic,
-        TransactionInterface $transaction,
-    ): Fee
+    protected function calculateCommissionFee(Fee $fee): void
     {
-        return new Fee(
-            $this->calculateFee($transaction->getValue(), $this->depositFee),
-            $transaction->getCurrency()
-        );
+        $fee->setBaseAmount($fee->getOriginalTransaction()->getAmount());
+        $fee->setAmount($this->calculateFeeAmount($fee, $this->depositFee));
+    }
+
+    protected function updateUserStatistics(Fee $fee): void
+    {
+        return; //Do nothing. Can be updated if need to do something with deposit flow
     }
 }

@@ -4,7 +4,7 @@ namespace App\Service\DataTransferObject;
 
 interface CurrencyInterface
 {
-    public function getValue(): float;
+    public function getAmount(): float;
 
     public function getCurrency(): string;
 }

@@ -2,7 +2,7 @@
 
 namespace App\Service\CurrencyExchange;
 
-use App\Service\DataTransferObject\ConvertInterface;
+use App\Service\DataTransferObject\ExchangeRate;
 
 class CurrencyExchangeService
 {
@@ -10,10 +10,8 @@ class CurrencyExchangeService
     {
     }
 
-    public function convertToCurrency(ConvertInterface $transaction, string $currency): ConvertInterface
+    public function getExchangeRate(string $transactionCurrency): ExchangeRate
     {
-        $rate = $this->provider->getExchangeRates()->getExchangeRateForCurrency($currency);
-
-        return $transaction->convert($rate);
+        return $this->provider->getExchangeRates()->getExchangeRateForCurrency($transactionCurrency);
     }
 }

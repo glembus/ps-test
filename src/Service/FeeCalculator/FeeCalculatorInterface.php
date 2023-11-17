@@ -8,5 +8,5 @@ use App\Service\DataTransferObject\UserWeekTransactionStatistic;
 
 interface FeeCalculatorInterface
 {
-    public function calculateCommissionFee(UserWeekTransactionStatistic $statistic, TransactionInterface $transaction, ): Fee;
+    public function calculateFee(Fee $fee): void;
 }

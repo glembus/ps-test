@@ -11,8 +11,7 @@ class FeeCalculatorFactory
         private readonly float $depositFee,
         private readonly float $withdrawPrivateFee,
         private readonly float $withdrawBusinessFee
-    )
-    {
+    ) {
     }
 
     public function getFeeCalculator(TransactionDirectionInterface $transactionType): FeeCalculatorInterface

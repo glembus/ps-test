@@ -4,9 +4,14 @@ namespace App\Service\DataTransferObject;
 
 final class ExchangeRate
 {
-    public function __construct(private readonly float $rate, private readonly string $currency) {}
+    public function __construct(
+        private float $rate,
+        private string $currency,
+    ) {
 
-    public function getRate(bool $inverseConversation = false): float
+    }
+
+    public function getRate(): float
     {
         return $this->rate;
     }
@@ -14,5 +19,14 @@ final class ExchangeRate
     public function getCurrency(): string
     {
         return $this->currency;
+    }
+
+    public function getBackwardExchangeRate(string $currency): self
+    {
+        $rate = clone ($this);
+        $rate->rate = 1 / $this->rate;
+        $rate->currency = $currency;
+
+        return $rate;
     }
 }

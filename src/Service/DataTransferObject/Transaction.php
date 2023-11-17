@@ -4,17 +4,16 @@ namespace App\Service\DataTransferObject;
 
 final class Transaction implements TransactionInterface
 {
-    public static $availableTypes = [self::TYPE_BUSINESS, self::TYPE_PRIVATE];
+    public static array $availableTypes = [self::TYPE_BUSINESS, self::TYPE_PRIVATE];
 
     public function __construct(
-        private readonly string $type,
-        private readonly int $userId,
-        private readonly float $value,
-        private readonly string $currency,
-        private readonly string $direction,
+        private readonly string    $type,
+        private readonly int       $userId,
+        private readonly float     $amount,
+        private readonly string    $currency,
+        private readonly string    $direction,
         private readonly \DateTime $date,
-    )
-    {
+    ) {
     }
 
     public function getUserId(): int
@@ -37,9 +36,9 @@ final class Transaction implements TransactionInterface
         return $this->currency;
     }
 
-    public function getValue(): float
+    public function getAmount(): float
     {
-        return $this->value;
+        return $this->amount;
     }
 
     public function getDirection(): string
@@ -49,14 +48,10 @@ final class Transaction implements TransactionInterface
 
     public function convert(ExchangeRate $rate): static
     {
-        if ($rate->getCurrency() === $this->currency) {
-            return $this;
-        }
-
         return new self(
             type: $this->type,
             userId: $this->userId,
-            value: $this->value * $rate->getRate(),
+            amount: $this->amount * $rate->getRate(),
             currency: $rate->getCurrency(),
             direction: $this->direction,
             date: $this->date,
@@ -65,11 +60,16 @@ final class Transaction implements TransactionInterface
 
     public function getWeek(): int
     {
-        return $this->date->format('W');
+        return (int) $this->date->format('W');
     }
 
     public static function isTransactionTypeValid(string $transactionType): bool
     {
         return in_array($transactionType, self::$availableTypes);
+    }
+
+    public function __toString(): string
+    {
+        return (string) round($this->amount, 2);
     }
 }

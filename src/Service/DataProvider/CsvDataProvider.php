@@ -10,13 +10,13 @@ use Traversable;
 
 class CsvDataProvider implements DataProviderInterface
 {
-    private readonly \SplFileObject $file;
+    private \SplFileObject $file;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly string $filePath,
-        private readonly string $columnSeparator = ',')
-    {
+        private readonly string $columnSeparator = ','
+    ) {
     }
 
     /**

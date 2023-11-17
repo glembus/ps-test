@@ -5,6 +5,7 @@ namespace App\Service\DataTransferObject;
 class UserWeekTransactionStatistic
 {
     private const WITHDRAW_ATTEMPT_LIMIT = 3;
+    private const PRIVATE_FREE_WITHDRAW_LIMIT = 1000.0;
 
     private float $withdrawnSum = 0.0;
 
@@ -30,7 +31,7 @@ class UserWeekTransactionStatistic
 
     public function getWithdrawnSum(): float
     {
-        return $this->withdrawnSum;
+        return 0.0 === $this->withdrawnSum ? self::PRIVATE_FREE_WITHDRAW_LIMIT : $this->withdrawnSum;
     }
 
     public function isWithdrawFeeCanBeCharged(float $withdrawSum): bool

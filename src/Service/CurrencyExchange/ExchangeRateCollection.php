@@ -6,15 +6,17 @@ use App\Service\DataTransferObject\ExchangeRate;
 
 final class ExchangeRateCollection
 {
+    /** @var \ArrayIterator<string, ExchangeRate> */
     private \ArrayIterator $rates;
 
     private readonly \DateTime $date;
 
     public function __construct(
-        private readonly string $baseCurrency = 'EUR',
+        private readonly string $baseCurrency,
         string $date,
     ) {
-        $this->date = date_create_from_format('Y-m-d', $date);
+        $this->date = new \DateTime($date);
+
         $this->rates = new \ArrayIterator();
     }
 

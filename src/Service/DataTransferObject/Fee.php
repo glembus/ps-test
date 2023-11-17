@@ -2,33 +2,69 @@
 
 namespace App\Service\DataTransferObject;
 
-final class Fee implements ConvertInterface
+final class Fee implements CurrencyInterface
 {
-    public function __construct(private readonly float $value, private readonly string $currency)
-    {
+    private float $baseAmount;
+
+    private float $amount;
+
+    private TransactionInterface $transactionInBaseCurrency;
+
+    public function __construct(
+        private readonly TransactionInterface $originalTransaction,
+        private readonly ExchangeRate $exchangeRate,
+        private UserWeekTransactionStatistic $statistic,
+    ) {
+        $this->transactionInBaseCurrency = $this->originalTransaction->convert($this->exchangeRate);
     }
 
-    public function getValue(): float
+    public function getExchangeRate(): ExchangeRate
     {
-        return $this->value;
+        return $this->exchangeRate;
+    }
+
+    public function getBaseAmount(): float
+    {
+        return $this->baseAmount;
+    }
+
+    public function setBaseAmount(float $baseAmount): void
+    {
+        $this->baseAmount = $baseAmount;
+    }
+
+    public function getOriginalTransaction(): TransactionInterface
+    {
+        return $this->originalTransaction;
+    }
+
+    public function getTransactionInBaseCurrency(): TransactionInterface
+    {
+        return $this->transactionInBaseCurrency;
     }
 
     public function getCurrency(): string
     {
-        return $this->currency;
+        return $this->originalTransaction->getCurrency();
     }
 
-    public function convert(ExchangeRate $rate): static
+    public function setAmount(float $amount): void
     {
-        if ($rate->getCurrency() === $this->currency) {
-            return $this;
-        }
+        $this->amount = $amount;
+    }
 
-        return new self($this->value * $rate->getRate(), $rate->getCurrency());
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    public function getUserWeekTransactionStatistic(): UserWeekTransactionStatistic
+    {
+        return $this->statistic;
     }
 
     public function __toString(): string
     {
-        return round($this->value, 2);
+        return (string) round($this->amount, 2);
     }
 }

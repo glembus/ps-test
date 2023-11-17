@@ -9,7 +9,7 @@ use ArrayAccess;
 final class InMemoryTransactionStorage implements TransactionStorageInterface
 {
     /**
-     * @var ArrayAccess<string, TransactionInterface>
+     * @var ArrayAccess<int, UserWeekTransactionStatistic>
      */
     private ArrayAccess $transactionCollection;
 
@@ -27,7 +27,7 @@ final class InMemoryTransactionStorage implements TransactionStorageInterface
 
     public function getUserWeekTransactionsStatistic(int $userId, \DateTime $date): UserWeekTransactionStatistic
     {
-        $this->validateStorageForDate($date->format('W'));
+        $this->validateStorageForDate((int) $date->format('W'));
 
         if (!$this->transactionCollection->offsetExists($userId)) {
             $this->updateUserWeekTransactionsStatistic($userId, new UserWeekTransactionStatistic());

@@ -7,9 +7,9 @@ use App\Service\DataTransferObject\TransactionInterface;
 
 class TransactionDataBuilder
 {
-    private ?\DateTime $date;
+    private \DateTime $date;
 
-    private string $userId = '';
+    private int $userId;
 
     private string $direction;
 
@@ -47,7 +47,7 @@ class TransactionDataBuilder
         return $this;
     }
 
-    public function setUserId(string $userId): self
+    public function setUserId(int $userId): self
     {
         $this->userId = $userId;
 
@@ -61,11 +61,6 @@ class TransactionDataBuilder
         return $this;
     }
 
-    public function getValue(): float
-    {
-        return $this->value;
-    }
-
     public function build(): TransactionInterface
     {
         if (!Transaction::isTransactionTypeValid($this->type)) {
@@ -75,7 +70,7 @@ class TransactionDataBuilder
         return new Transaction(
             type: $this->type,
             userId: $this->userId,
-            value: $this->value,
+            amount: $this->value,
             currency: $this->currency,
             direction: $this->direction,
             date: $this->date

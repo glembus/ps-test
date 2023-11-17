@@ -3,54 +3,59 @@
 namespace App\Service\FeeCalculator;
 
 use App\Service\CurrencyExchange\CurrencyExchangeService;
-use App\Service\DataTransferObject\CommissionBaseAmount;
-use App\Service\DataTransferObject\ConvertInterface;
 use App\Service\DataTransferObject\Fee;
 use App\Service\DataTransferObject\TransactionInterface;
 use App\Service\DataTransferObject\UserWeekTransactionStatistic;
 
 class WithdrawFeeCalculator extends AbstractFeeCalculator
 {
-    private const PRIVATE_FREE_WITHDRAW_LIMIT = 1000.0;
-
     public function __construct(
         protected readonly CurrencyExchangeService $exchangeService,
         private readonly float $withdrawPrivateFee,
         private readonly float $withdrawBusinessFee
-    ){
+    ) {
     }
 
-    public function calculateCommissionFee(UserWeekTransactionStatistic $statistic, TransactionInterface $transaction): Fee
+    protected function calculateCommissionFee(Fee $fee): void
     {
-        if ($transaction->getType() === TransactionInterface::TYPE_BUSINESS) {
-            return new Fee(
-                $this->calculateFee($transaction->getValue(), $this->withdrawBusinessFee),
-                $transaction->getCurrency()
-            );
+        if ($fee->getOriginalTransaction()->getType() === TransactionInterface::TYPE_BUSINESS) {
+            $fee->setBaseAmount($fee->getOriginalTransaction()->getAmount());
+            $fee->setAmount($this->calculateFeeAmount($fee, $this->withdrawBusinessFee));
+
+            return;
         }
 
-        $convertedTransaction = $this->exchangeService->convertToCurrency($transaction, 'EUR');
-        $baseAmount = $this->getBaseAmountForCommission($statistic, $convertedTransaction);
-
-        return new Fee(
-            $this->exchangeService->convertToCurrency($baseAmount, $transaction->getCurrency())->getValue(),
-            $transaction->getCurrency()
-        );
-
+        $this->calculateBaseAmountForCommission($fee);
+        $fee->setAmount($this->calculateFeeAmount($fee, $this->withdrawPrivateFee));
     }
 
-    private function getBaseAmountForCommission(UserWeekTransactionStatistic $statistic, ConvertInterface $transaction): CommissionBaseAmount
+    protected function updateUserStatistics(Fee $fee): void
     {
-        if (!$statistic->isWithdrawFeeCanBeCharged($transaction->getValue())) {
-            return new CommissionBaseAmount(0.0, $transaction->getCurrency());
+        $fee->getUserWeekTransactionStatistic()->withdraw($fee->getTransactionInBaseCurrency()->getAmount());
+    }
+
+    private function calculateBaseAmountForCommission(Fee $fee): void
+    {
+        $statistic = $fee->getUserWeekTransactionStatistic();
+        if (!$statistic->isWithdrawFeeCanBeCharged($fee->getTransactionInBaseCurrency()->getAmount())) {
+            $fee->setBaseAmount(0.0);
+
+            return;
         }
 
         if (!$statistic->isUserReachWithdrawAttemptLimit()) {
-            $amount = $transaction->getValue() - $statistic->getWithdrawnSum();
+            $amount = $fee->getTransactionInBaseCurrency()->getAmount() - $statistic->getWithdrawnSum();
+            if ($amount <= 0) {
+                $fee->setBaseAmount(0.0);
 
-            return new CommissionBaseAmount($amount < 0 ? 0.0 : $amount, $transaction->getCurrency());
+                return;
+            }
+
+            $fee->setBaseAmount($amount * $fee->getExchangeRate()->getRate());
+
+            return;
         }
 
-        return new CommissionBaseAmount($transaction->getValue(), $transaction->getCurrency());
+        $fee->setBaseAmount($fee->getOriginalTransaction()->getAmount());
     }
 }

@@ -3,16 +3,22 @@
 namespace App\Service\FeeCalculator;
 
 use App\Service\DataTransferObject\Fee;
-use App\Service\DataTransferObject\TransactionInterface;
-use App\Service\DataTransferObject\UserWeekTransactionStatistic;
 
 abstract class AbstractFeeCalculator implements FeeCalculatorInterface
 {
-    abstract public function calculateCommissionFee(UserWeekTransactionStatistic $statistic, TransactionInterface $transaction): Fee;
-
-    protected function calculateFee(float $value, float $chargeFee): float
+    public function calculateFee(Fee $fee): void
     {
-        $value = $value * $chargeFee;
+        $this->calculateCommissionFee($fee);
+        $this->updateUserStatistics($fee);
+    }
+
+    abstract protected function updateUserStatistics(Fee $fee): void;
+
+    abstract protected function calculateCommissionFee(Fee $fee): void;
+
+    protected function calculateFeeAmount(Fee $fee, float $chargeFee): float
+    {
+        $value = $fee->getBaseAmount() * $chargeFee;
         $roundedValue = round($value, 2, PHP_ROUND_HALF_DOWN);
         if (($value - $roundedValue) === 0.0) {
             return $roundedValue;
