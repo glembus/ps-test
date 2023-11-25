@@ -9,33 +9,33 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ExternalExchangeRateProvider implements ExchangeRateProviderInterface
 {
-    private ExchangeRateCollection $rates;
+	private ExchangeRateCollection $rates;
 
-    private bool $rateLoaded = false;
+	private bool $rateLoaded = false;
 
-    public function __construct(
-        private readonly HttpClientInterface $httpClient,
-        private readonly string $currencyExchangeRateUrl
-    ) {
-    }
+	public function __construct(
+		private readonly HttpClientInterface $httpClient,
+		private readonly string $currencyExchangeRateUrl
+	) {
+	}
 
-    public function getExchangeRates(): ExchangeRateCollection
-    {
-        $this->loadRates();
+	public function getExchangeRates(): ExchangeRateCollection
+	{
+		$this->loadRates();
 
-        return $this->rates;
-    }
+		return $this->rates;
+	}
 
-    private function loadRates(): void
-    {
-        if (!$this->rateLoaded) {
-            $response = $this->httpClient->request('GET', $this->currencyExchangeRateUrl)->toArray();
-            $this->rates = new ExchangeRateCollection($response['base'], $response['date']);
-            foreach ($response['rates'] as $currency => $rate) {
-                $this->rates->addExchangeRate(new ExchangeRate($rate, $currency));
-            }
+	private function loadRates(): void
+	{
+		if (!$this->rateLoaded) {
+			$response = $this->httpClient->request('GET', $this->currencyExchangeRateUrl)->toArray();
+			$this->rates = new ExchangeRateCollection($response['base'], $response['date']);
+			foreach ($response['rates'] as $currency => $rate) {
+				$this->rates->addExchangeRate(new ExchangeRate($rate, $currency));
+			}
 
-            $this->rateLoaded = true;
-        }
-    }
+			$this->rateLoaded = true;
+		}
+	}
 }

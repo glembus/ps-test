@@ -6,8 +6,8 @@ use App\Service\DataTransferObject\TransactionInterface;
 
 interface DataProviderInterface
 {
-    /**
-     * @return \Traversable<TransactionInterface>
-     */
-    public function getIterator(): \Traversable;
+	/**
+	 * @return \Traversable<TransactionInterface>
+	 */
+	public function getIterator(): \Traversable;
 }

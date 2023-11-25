@@ -6,5 +6,5 @@ use App\Service\DataTransferObject\TransactionInterface;
 
 interface DataAdapterInterface
 {
-    public static function convertToTransaction(mixed $transactionData): TransactionInterface;
+	public static function convertToTransaction(mixed $transactionData): TransactionInterface;
 }

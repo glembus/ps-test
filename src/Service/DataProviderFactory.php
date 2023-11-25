@@ -7,12 +7,12 @@ use Psr\Log\LoggerInterface;
 
 class DataProviderFactory
 {
-    public function __construct(private readonly LoggerInterface $logger)
-    {
-    }
+	public function __construct(private readonly LoggerInterface $logger, private readonly string $projectDir)
+	{
+	}
 
-    public function getCsvDataProvider(string $filePath, string $columnSeparator = ','): DataProviderInterface
-    {
-        return new CsvDataProvider($this->logger, $filePath, $columnSeparator);
-    }
+	public function getCsvDataProvider(string $filePath, string $columnSeparator = ','): DataProviderInterface
+	{
+		return new CsvDataProvider($this->logger, $this->projectDir, $filePath, $columnSeparator);
+	}
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "837e449494430d55f2deed667df2851e",
+    "content-hash": "efaff2e5e1b6524efe146758dd1956f7",
     "packages": [
         {
             "name": "psr/cache",
@@ -637,7 +637,7 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
@@ -684,7 +684,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.3.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.4.0"
             },
             "funding": [
                 {

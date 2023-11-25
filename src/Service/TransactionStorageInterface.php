@@ -6,7 +6,7 @@ use App\Service\DataTransferObject\UserWeekTransactionStatistic;
 
 interface TransactionStorageInterface
 {
-    public function getUserWeekTransactionsStatistic(int $userId, \DateTime $date): UserWeekTransactionStatistic;
+	public function getUserWeekTransactionsStatistic(int $userId, \DateTime $date): UserWeekTransactionStatistic;
 
-    public function updateUserWeekTransactionsStatistic(int $userId, UserWeekTransactionStatistic $statistic): void;
+	public function updateUserWeekTransactionsStatistic(int $userId, UserWeekTransactionStatistic $statistic): void;
 }
