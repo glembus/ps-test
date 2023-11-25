@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\DataProvider;
 
-use App\Service\DataContract\TransactionInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
 
 interface DataAdapterInterface
 {

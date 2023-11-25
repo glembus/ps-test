@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
-use App\Service\DataContract\TransactionStatisticInterface;
+use App\Service\DataTransferObject\DataContract\TransactionStatisticInterface;
 use App\Service\DataTransferObject\UserWeekTransactionStatistic;
+use ArrayObject;
+use DateTime;
+use Exception;
+use ArrayAccess;
 
 final class InMemoryTransactionStorage implements TransactionStorageInterface
 {
 	/**
-	 * @var \ArrayAccess<int, TransactionStatisticInterface>
+	 * @var ArrayAccess<int, TransactionStatisticInterface>
 	 */
-	private \ArrayAccess $transactionCollection;
+	private ArrayAccess $statistics;
 
 	private static string $currentWeek = '';
 
@@ -21,28 +27,28 @@ final class InMemoryTransactionStorage implements TransactionStorageInterface
 
 	public function clearStorage(): void
 	{
-		$this->transactionCollection = new \ArrayObject();
+		$this->statistics = new ArrayObject();
 	}
 
-	public function getUserWeekTransactionsStatistic(int $userId, \DateTime $date): TransactionStatisticInterface
+	public function getUserWeekTransactionsStatistic(int $userId, DateTime $date): TransactionStatisticInterface
 	{
 		$this->validateStorageForDate($date->format('W o'));
 
-		if (!$this->transactionCollection->offsetExists($userId)) {
+		if (!$this->statistics->offsetExists($userId)) {
 			$this->updateUserWeekTransactionsStatistic($userId, new UserWeekTransactionStatistic());
 		}
 
-        $statistic = $this->transactionCollection->offsetGet($userId);
-        if ($statistic instanceof TransactionStatisticInterface) {
-            return $statistic;
-        }
+		$statistic = $this->statistics->offsetGet($userId);
+		if ($statistic instanceof TransactionStatisticInterface) {
+			return $statistic;
+		}
 
-		return throw new \Exception('Unsupported data type received from statistic storage');
+		return throw new Exception('Unsupported data type received from statistic storage');
 	}
 
 	public function updateUserWeekTransactionsStatistic(int $userId, TransactionStatisticInterface $statistic): void
 	{
-		$this->transactionCollection->offsetSet($userId, $statistic);
+		$this->statistics->offsetSet($userId, $statistic);
 	}
 
 	private function validateStorageForDate(string $transactionWeek): void

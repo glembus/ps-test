@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exception;
 
-class UnreachableResourceException extends \Exception
+use Exception;
+
+class UnreachableResourceException extends Exception
 {
 	public function __construct(string $filePath)
 	{

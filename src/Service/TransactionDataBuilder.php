@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
-use App\Service\DataContract\TransactionInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
 use App\Service\DataTransferObject\Transaction;
+use DateTime;
+use Exception;
 
 class TransactionDataBuilder
 {
-	private \DateTime $date;
+	private DateTime $date;
 
 	private int $userId;
 
@@ -33,7 +37,7 @@ class TransactionDataBuilder
 		return $this;
 	}
 
-	public function setDate(\DateTime $date): self
+	public function setDate(DateTime $date): self
 	{
 		$this->date = $date;
 
@@ -61,10 +65,15 @@ class TransactionDataBuilder
 		return $this;
 	}
 
+	/**
+	 * @throws Exception
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess)
+	 */
 	public function build(): TransactionInterface
 	{
 		if (!Transaction::isTransactionTypeValid($this->type)) {
-			throw new \Exception('Unsupported type exception');
+			throw new Exception('Unsupported type exception');
 		}
 
 		return new Transaction(

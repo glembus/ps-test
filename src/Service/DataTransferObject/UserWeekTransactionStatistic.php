@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\DataTransferObject;
 
-use App\Service\DataContract\TransactionStatisticInterface;
+use App\Service\DataTransferObject\DataContract\TransactionStatisticInterface;
 
 class UserWeekTransactionStatistic implements TransactionStatisticInterface
 {

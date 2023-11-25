@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Service\CurrencyExchange\CurrencyExchangeService;
-use App\Service\DataContract\TransactionInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
 use App\Service\DataTransferObject\Fee;
 use App\Service\FeeCalculator\FeeCalculatorFactory;
 

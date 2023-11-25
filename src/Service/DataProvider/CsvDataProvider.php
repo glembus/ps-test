@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\DataProvider;
 
 use App\Exception\UnreachableResourceException;
-use App\Service\DataContract\TransactionInterface;
 use App\Service\DataProviderInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
 use Psr\Log\LoggerInterface;
+use Exception;
+use Traversable;
+use SplFileObject;
+use SplFileInfo;
 
 class CsvDataProvider implements DataProviderInterface
 {
-	private \SplFileObject $file;
+	private SplFileObject $file;
 
 	public function __construct(
 		private readonly LoggerInterface $logger,
@@ -20,17 +26,19 @@ class CsvDataProvider implements DataProviderInterface
 	}
 
 	/**
-	 * @return \Traversable<TransactionInterface>
+	 * @return Traversable<TransactionInterface>
 	 *
 	 * @throws UnreachableResourceException
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess)
 	 */
-	public function getIterator(): \Traversable
+	public function getIterator(): Traversable
 	{
 		$this->prepareFile();
 		foreach ($this->file as $row) {
 			try {
 				yield CsvDataAdapter::convertToTransaction($row);
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				$this->logger->error('transaction_build_fail', [
 					'sErrorMessage' => $e->getMessage(),
 					'sData' => print_r($row, true),
@@ -39,16 +47,19 @@ class CsvDataProvider implements DataProviderInterface
 		}
 	}
 
+	/**
+	 * @throws UnreachableResourceException
+	 */
 	private function prepareFile(): void
 	{
 		$this->file = $this->loadFile()->openFile('r');
-		$this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY | \SplFileObject::READ_AHEAD);
+		$this->file->setFlags(SplFileObject::READ_CSV | SplFileObject::SKIP_EMPTY | SplFileObject::READ_AHEAD);
 		$this->file->setCsvControl($this->columnSeparator);
 	}
 
-	private function loadFile(): \SplFileInfo
+	private function loadFile(): SplFileInfo
 	{
-		$fileInfo = new \SplFileInfo($this->filePath);
+		$fileInfo = new SplFileInfo($this->filePath);
 		if (!$fileInfo->isDir() && $fileInfo->isFile()) {
 			$this->removeBomPartFromFile($this->filePath);
 
@@ -56,7 +67,7 @@ class CsvDataProvider implements DataProviderInterface
 		}
 
 		$internalFilePath = $this->projectDir.DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$this->filePath;
-		$fileInfo = new \SplFileInfo($internalFilePath);
+		$fileInfo = new SplFileInfo($internalFilePath);
 		if (!$fileInfo->isDir() && $fileInfo->isFile()) {
 			$this->removeBomPartFromFile($internalFilePath);
 

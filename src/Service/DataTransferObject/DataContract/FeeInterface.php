@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Service\DataContract;
+declare(strict_types=1);
+
+namespace App\Service\DataTransferObject\DataContract;
 
 interface FeeInterface extends CurrencyInterface, \Stringable
 {
@@ -8,7 +10,7 @@ interface FeeInterface extends CurrencyInterface, \Stringable
 
 	public function setAmount(float $amount): void;
 
-	public function getTransactionInBaseCurrency(): TransactionInterface;
+	public function getTransInBaseCurrency(): TransactionInterface;
 
 	public function getOriginalTransaction(): TransactionInterface;
 

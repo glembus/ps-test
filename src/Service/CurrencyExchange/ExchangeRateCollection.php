@@ -1,23 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\CurrencyExchange;
 
-use App\Service\DataContract\ExchangeRateInterface;
+use App\Service\DataTransferObject\DataContract\ExchangeRateInterface;
+use Exception;
+use DateTime;
+use ArrayIterator;
 
 final class ExchangeRateCollection
 {
-	/** @var \ArrayIterator<string, ExchangeRateInterface> */
-	private \ArrayIterator $rates;
+	/** @var ArrayIterator<string, ExchangeRateInterface> */
+	private ArrayIterator $rates;
 
-	private readonly \DateTime $date;
+	private readonly DateTime $date;
 
 	public function __construct(
 		private readonly string $baseCurrency,
 		string $date,
 	) {
-		$this->date = new \DateTime($date);
-
-		$this->rates = new \ArrayIterator();
+		$this->date = new DateTime($date);
+		$this->rates = new ArrayIterator();
 	}
 
 	public function addExchangeRate(ExchangeRateInterface $rate): self
@@ -34,10 +38,10 @@ final class ExchangeRateCollection
 			return $exchangeRate;
 		}
 
-		throw new \Exception('Invalid currency provided');
+		throw new Exception('Invalid currency provided');
 	}
 
-	public function getDate(): \DateTime
+	public function getDate(): DateTime
 	{
 		return $this->date;
 	}

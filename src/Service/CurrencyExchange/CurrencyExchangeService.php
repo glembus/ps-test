@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\CurrencyExchange;
 
-use App\Service\DataContract\ExchangeRateInterface;
+use App\Service\DataTransferObject\DataContract\ExchangeRateInterface;
 
 class CurrencyExchangeService
 {

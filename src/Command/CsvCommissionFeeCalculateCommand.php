@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Service\CommissionFeeService;
-use App\Service\DataContract\TransactionInterface;
 use App\Service\DataProviderFactory;
-use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Exception;
 
 #[AsCommand(
 	name: 'calculator:commission:csv',
@@ -36,13 +38,13 @@ final class CsvCommissionFeeCalculateCommand extends Command
 		;
 	}
 
-	public function execute(InputInterface $input, OutputInterface $output)
+	public function execute(InputInterface $input, OutputInterface $output): int
 	{
-        $filePath = $input->getArgument('file');
-        $separator = $input->getOption('csv-separator');
-        if (!is_string($filePath) || !is_string($separator)) {
-            throw new \Exception('File must be string');
-        }
+		$filePath = $input->getArgument('file');
+		$separator = $input->getOption('csv-separator');
+		if (!is_string($filePath) || !is_string($separator)) {
+			throw new Exception('File must be string');
+		}
 
 		$dataProvider = $this->dataProviderFactory->getCsvDataProvider($filePath, $separator);
 		$debugMode = (bool) $input->getOption('debug');
@@ -50,7 +52,7 @@ final class CsvCommissionFeeCalculateCommand extends Command
 		foreach ($dataProvider->getIterator() as $transaction) {
 			$fee = $this->commissionFeeService->calculateCommissionFee($transaction);
 			if ($debugMode) {
-				$output->write('User: '.$fee->getOriginalTransaction()->getUserId().' Transaction amount: '.$fee->getOriginalTransaction().' Trans in base: '.$fee->getTransactionInBaseCurrency().' Base amount: '.$fee->getBaseAmount().' fee: ');
+				$output->write('User: '.$fee->getOriginalTransaction()->getUserId().' Transaction amount: '.$fee->getOriginalTransaction().' Trans in base: '.$fee->getTransInBaseCurrency().' Base amount: '.$fee->getBaseAmount().' fee: ');
 			}
 
 			$output->writeln((string) $fee);

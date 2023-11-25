@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\FeeCalculator;
 
-use App\Service\DataContract\FeeInterface;
-use App\Service\DataContract\TransactionInterface;
+use App\Service\DataTransferObject\DataContract\FeeInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
 
 class WithdrawFeeCalculator extends AbstractFeeCalculator
 {
@@ -28,19 +30,19 @@ class WithdrawFeeCalculator extends AbstractFeeCalculator
 
 	protected function updateUserStatistics(FeeInterface $fee): void
 	{
-		$fee->getTransactionStatistic()->withdraw($fee->getTransactionInBaseCurrency()->getAmount());
+		$fee->getTransactionStatistic()->withdraw($fee->getTransInBaseCurrency()->getAmount());
 	}
 
 	private function calculateBaseAmountForCommission(FeeInterface $fee): void
 	{
 		$statistic = $fee->getTransactionStatistic();
-		if (!$statistic->isWithdrawFeeCanBeCharged($fee->getTransactionInBaseCurrency()->getAmount())) {
+		if (!$statistic->isWithdrawFeeCanBeCharged($fee->getTransInBaseCurrency()->getAmount())) {
 			$fee->setBaseAmount(0.0);
 
 			return;
 		}
 
 		$freeWithdrawAmount = $statistic->getFreeWithdrawnAmountLeft();
-		$fee->setBaseAmount(abs($fee->getTransactionInBaseCurrency()->getAmount() - $freeWithdrawAmount) * $fee->getExchangeRate()->getInverseExchangeRate($fee->getOriginalTransaction()->getCurrency())->getRate());
+		$fee->setBaseAmount(abs($fee->getTransInBaseCurrency()->getAmount() - $freeWithdrawAmount) * $fee->getExchangeRate()->getInverseExchangeRate($fee->getOriginalTransaction()->getCurrency())->getRate());
 	}
 }

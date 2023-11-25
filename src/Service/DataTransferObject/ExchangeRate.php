@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\DataTransferObject;
 
-use App\Service\DataContract\ExchangeRateInterface;
+use App\Service\DataTransferObject\DataContract\ExchangeRateInterface;
 
 final class ExchangeRate implements ExchangeRateInterface
 {

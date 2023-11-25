@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\FeeCalculator;
 
-use App\Service\DataContract\FeeInterface;
+use App\Service\DataTransferObject\DataContract\FeeInterface;
 
 abstract class AbstractFeeCalculator implements FeeCalculatorInterface
 {

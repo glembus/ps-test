@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\DataTransferObject;
 
-use App\Service\DataContract\ExchangeRateInterface;
-use App\Service\DataContract\TransactionInterface;
+use App\Service\DataTransferObject\DataContract\ExchangeRateInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
+use DateTime;
 
 final class Transaction implements TransactionInterface
 {
-    /** @var array<string>  */
+	/** @var array<string> */
 	public static array $availableTypes = [self::TYPE_BUSINESS, self::TYPE_PRIVATE];
 
 	public function __construct(
@@ -16,7 +19,7 @@ final class Transaction implements TransactionInterface
 		private readonly float $amount,
 		private readonly string $currency,
 		private readonly string $direction,
-		private readonly \DateTime $date,
+		private readonly DateTime $date,
 	) {
 	}
 
@@ -25,7 +28,7 @@ final class Transaction implements TransactionInterface
 		return $this->userId;
 	}
 
-	public function getDate(): \DateTime
+	public function getDate(): DateTime
 	{
 		return $this->date;
 	}

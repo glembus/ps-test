@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Integration\Service;
 
 use App\Service\CommissionFeeService;
@@ -8,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\JsonMockResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use DateTime;
 
 class CommissionFeeServiceTest extends KernelTestCase
 {
@@ -39,7 +42,7 @@ class CommissionFeeServiceTest extends KernelTestCase
 		foreach ($this->transactionsData as $transactionData) {
 			$transaction = (new TransactionDataBuilder())
 				->setCurrency($transactionData->currency)
-				->setDate(new \DateTime($transactionData->date))
+				->setDate(new DateTime($transactionData->date))
 				->setType($transactionData->type)
 				->setDirection($transactionData->direction)
 				->setValue($transactionData->amount)

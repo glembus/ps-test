@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\CurrencyExchange\Provider;
 
 use App\Service\CurrencyExchange\ExchangeRateCollection;
@@ -15,7 +17,7 @@ final class ExternalExchangeRateProvider implements ExchangeRateProviderInterfac
 
 	public function __construct(
 		private readonly HttpClientInterface $httpClient,
-		private readonly string $currencyExchangeRateUrl
+		private readonly string $serviceUrl
 	) {
 	}
 
@@ -29,7 +31,7 @@ final class ExternalExchangeRateProvider implements ExchangeRateProviderInterfac
 	private function loadRates(): void
 	{
 		if (!$this->rateLoaded) {
-			$response = $this->httpClient->request('GET', $this->currencyExchangeRateUrl)->toArray();
+			$response = $this->httpClient->request('GET', $this->serviceUrl)->toArray();
 			$this->rates = new ExchangeRateCollection($response['base'], $response['date']);
 			foreach ($response['rates'] as $currency => $rate) {
 				$this->rates->addExchangeRate(new ExchangeRate($rate, $currency));

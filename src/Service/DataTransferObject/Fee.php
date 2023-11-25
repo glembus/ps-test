@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\DataTransferObject;
 
-use App\Service\DataContract\ExchangeRateInterface;
-use App\Service\DataContract\FeeInterface;
-use App\Service\DataContract\TransactionInterface;
-use App\Service\DataContract\TransactionStatisticInterface;
+use App\Service\DataTransferObject\DataContract\ExchangeRateInterface;
+use App\Service\DataTransferObject\DataContract\FeeInterface;
+use App\Service\DataTransferObject\DataContract\TransactionInterface;
+use App\Service\DataTransferObject\DataContract\TransactionStatisticInterface;
 
 final class Fee implements FeeInterface
 {
@@ -13,14 +15,14 @@ final class Fee implements FeeInterface
 
 	private float $amount;
 
-	private TransactionInterface $transactionInBaseCurrency;
+	private TransactionInterface $transInBaseCurrency;
 
 	public function __construct(
 		private readonly TransactionInterface $originalTransaction,
 		private readonly ExchangeRateInterface $exchangeRate,
 		private readonly TransactionStatisticInterface $statistic,
 	) {
-		$this->transactionInBaseCurrency = $this->originalTransaction->convert($this->exchangeRate);
+		$this->transInBaseCurrency = $this->originalTransaction->convert($this->exchangeRate);
 	}
 
 	public function getExchangeRate(): ExchangeRateInterface
@@ -43,9 +45,9 @@ final class Fee implements FeeInterface
 		return $this->originalTransaction;
 	}
 
-	public function getTransactionInBaseCurrency(): TransactionInterface
+	public function getTransInBaseCurrency(): TransactionInterface
 	{
-		return $this->transactionInBaseCurrency;
+		return $this->transInBaseCurrency;
 	}
 
 	public function getCurrency(): string
