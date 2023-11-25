@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\FeeCalculator;
 
-use App\Service\DataTransferObject\Fee;
-use App\Service\DataTransferObject\TransactionInterface;
-use App\Service\DataTransferObject\UserWeekTransactionStatistic;
+use App\Service\DataTransferObject\DataContract\FeeInterface;
 
 interface FeeCalculatorInterface
 {
-    public function calculateFee(Fee $fee): void;
+	public function calculateFee(FeeInterface $fee): void;
 }

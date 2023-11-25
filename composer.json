@@ -18,7 +18,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.38",
+        "phpmd/phpmd": "^2.14",
         "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.6",
         "symfony/test-pack": "^1.1"
     },
     "config": {
@@ -36,7 +38,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        }
+        },
+        "exclude-from-classmap": [
+            "/tests"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -49,7 +54,9 @@
         "symfony/polyfill-php72": "*"
     },
     "scripts": {
-
+        "phpmd": "./vendor/bin/phpmd ./src text ./phpmd.xml",
+        "cs-fix": "./vendor/bin/php-cs-fixer fix --config=./cs-fixer.php --allow-risky=yes ./",
+        "phpstan": "./vendor/bin/phpstan"
     },
     "conflict": {
         "symfony/symfony": "*"

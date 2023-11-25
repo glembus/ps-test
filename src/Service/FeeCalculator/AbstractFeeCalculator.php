@@ -1,29 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\FeeCalculator;
 
-use App\Service\DataTransferObject\Fee;
+use App\Service\DataTransferObject\DataContract\FeeInterface;
 
 abstract class AbstractFeeCalculator implements FeeCalculatorInterface
 {
-    public function calculateFee(Fee $fee): void
-    {
-        $this->calculateCommissionFee($fee);
-        $this->updateUserStatistics($fee);
-    }
+	public function calculateFee(FeeInterface $fee): void
+	{
+		$this->calculateCommissionFee($fee);
+		$this->updateUserStatistics($fee);
+	}
 
-    abstract protected function updateUserStatistics(Fee $fee): void;
+	abstract protected function updateUserStatistics(FeeInterface $fee): void;
 
-    abstract protected function calculateCommissionFee(Fee $fee): void;
+	abstract protected function calculateCommissionFee(FeeInterface $fee): void;
 
-    protected function calculateFeeAmount(Fee $fee, float $chargeFee): float
-    {
-        $value = $fee->getBaseAmount() * $chargeFee;
-        $roundedValue = round($value, 2, PHP_ROUND_HALF_DOWN);
-        if (($value - $roundedValue) === 0.0) {
-            return $roundedValue;
-        }
+	protected function calculateFeeAmount(FeeInterface $fee, float $chargeFee): float
+	{
+		$value = round($fee->getBaseAmount() * $chargeFee, 3);
+		$roundedValue = round($value, 2, PHP_ROUND_HALF_DOWN);
+		if (($value - $roundedValue) === 0.0) {
+			return $roundedValue;
+		}
 
-        return $roundedValue + 0.01;
-    }
+		return $roundedValue + 0.01;
+	}
 }
