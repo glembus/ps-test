@@ -2,7 +2,7 @@
 
 namespace App\Service\CurrencyExchange;
 
-use App\Service\DataTransferObject\ExchangeRateInterface;
+use App\Service\DataContract\ExchangeRateInterface;
 
 class CurrencyExchangeService
 {

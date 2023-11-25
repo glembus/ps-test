@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\DataTransferObject;
+namespace App\Service\DataContract;
 
 use App\Service\FeeCalculator\TransactionDirectionInterface;
 

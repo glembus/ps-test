@@ -2,8 +2,8 @@
 
 namespace App\Service\FeeCalculator;
 
-use App\Service\DataTransferObject\FeeInterface;
-use App\Service\DataTransferObject\TransactionInterface;
+use App\Service\DataContract\FeeInterface;
+use App\Service\DataContract\TransactionInterface;
 
 class WithdrawFeeCalculator extends AbstractFeeCalculator
 {

@@ -3,8 +3,8 @@
 namespace App\Service\DataProvider;
 
 use App\Exception\UnreachableResourceException;
+use App\Service\DataContract\TransactionInterface;
 use App\Service\DataProviderInterface;
-use App\Service\DataTransferObject\TransactionInterface;
 use Psr\Log\LoggerInterface;
 
 class CsvDataProvider implements DataProviderInterface

@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CommissionFeeServiceTest extends KernelTestCase
 {
-	private readonly array $transactionsData;
+	private array $transactionsData;
 
 	public function setUp(): void
 	{

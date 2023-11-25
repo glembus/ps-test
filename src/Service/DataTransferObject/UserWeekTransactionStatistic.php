@@ -2,6 +2,8 @@
 
 namespace App\Service\DataTransferObject;
 
+use App\Service\DataContract\TransactionStatisticInterface;
+
 class UserWeekTransactionStatistic implements TransactionStatisticInterface
 {
 	private float $withdrawnSum = 0.0;

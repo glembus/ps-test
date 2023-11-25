@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
+use App\Service\DataContract\TransactionInterface;
 use App\Service\DataTransferObject\Transaction;
-use App\Service\DataTransferObject\TransactionInterface;
 
 class TransactionDataBuilder
 {

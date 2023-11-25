@@ -3,8 +3,9 @@
 namespace App\Command;
 
 use App\Service\CommissionFeeService;
+use App\Service\DataContract\TransactionInterface;
 use App\Service\DataProviderFactory;
-use App\Service\DataTransferObject\TransactionInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,8 +38,13 @@ final class CsvCommissionFeeCalculateCommand extends Command
 
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
-		$dataProvider = $this->dataProviderFactory
-			->getCsvDataProvider($input->getArgument('file'), $input->getOption('csv-separator'));
+        $filePath = $input->getArgument('file');
+        $separator = $input->getOption('csv-separator');
+        if (!is_string($filePath) || !is_string($separator)) {
+            throw new \Exception('File must be string');
+        }
+
+		$dataProvider = $this->dataProviderFactory->getCsvDataProvider($filePath, $separator);
 		$debugMode = (bool) $input->getOption('debug');
 		/** @var TransactionInterface $transaction */
 		foreach ($dataProvider->getIterator() as $transaction) {

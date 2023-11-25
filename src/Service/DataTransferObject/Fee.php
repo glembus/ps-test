@@ -2,6 +2,11 @@
 
 namespace App\Service\DataTransferObject;
 
+use App\Service\DataContract\ExchangeRateInterface;
+use App\Service\DataContract\FeeInterface;
+use App\Service\DataContract\TransactionInterface;
+use App\Service\DataContract\TransactionStatisticInterface;
+
 final class Fee implements FeeInterface
 {
 	private float $baseAmount;

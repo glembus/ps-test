@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Service\DataTransferObject\TransactionInterface;
+use App\Service\DataContract\TransactionInterface;
 
 interface DataProviderInterface
 {

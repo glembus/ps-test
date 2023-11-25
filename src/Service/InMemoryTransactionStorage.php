@@ -2,12 +2,13 @@
 
 namespace App\Service;
 
+use App\Service\DataContract\TransactionStatisticInterface;
 use App\Service\DataTransferObject\UserWeekTransactionStatistic;
 
 final class InMemoryTransactionStorage implements TransactionStorageInterface
 {
 	/**
-	 * @var \ArrayAccess<int, UserWeekTransactionStatistic>
+	 * @var \ArrayAccess<int, TransactionStatisticInterface>
 	 */
 	private \ArrayAccess $transactionCollection;
 
@@ -23,7 +24,7 @@ final class InMemoryTransactionStorage implements TransactionStorageInterface
 		$this->transactionCollection = new \ArrayObject();
 	}
 
-	public function getUserWeekTransactionsStatistic(int $userId, \DateTime $date): UserWeekTransactionStatistic
+	public function getUserWeekTransactionsStatistic(int $userId, \DateTime $date): TransactionStatisticInterface
 	{
 		$this->validateStorageForDate($date->format('W o'));
 
@@ -31,10 +32,15 @@ final class InMemoryTransactionStorage implements TransactionStorageInterface
 			$this->updateUserWeekTransactionsStatistic($userId, new UserWeekTransactionStatistic());
 		}
 
-		return $this->transactionCollection->offsetGet($userId);
+        $statistic = $this->transactionCollection->offsetGet($userId);
+        if ($statistic instanceof TransactionStatisticInterface) {
+            return $statistic;
+        }
+
+		return throw new \Exception('Unsupported data type received from statistic storage');
 	}
 
-	public function updateUserWeekTransactionsStatistic(int $userId, UserWeekTransactionStatistic $statistic): void
+	public function updateUserWeekTransactionsStatistic(int $userId, TransactionStatisticInterface $statistic): void
 	{
 		$this->transactionCollection->offsetSet($userId, $statistic);
 	}

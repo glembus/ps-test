@@ -2,6 +2,8 @@
 
 namespace App\Service\DataTransferObject;
 
+use App\Service\DataContract\ExchangeRateInterface;
+
 final class ExchangeRate implements ExchangeRateInterface
 {
 	public function __construct(

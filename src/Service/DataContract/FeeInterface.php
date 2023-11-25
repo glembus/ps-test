@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\DataTransferObject;
+namespace App\Service\DataContract;
 
 interface FeeInterface extends CurrencyInterface, \Stringable
 {

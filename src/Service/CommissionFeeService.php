@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Service\CurrencyExchange\CurrencyExchangeService;
+use App\Service\DataContract\TransactionInterface;
 use App\Service\DataTransferObject\Fee;
-use App\Service\DataTransferObject\TransactionInterface;
 use App\Service\FeeCalculator\FeeCalculatorFactory;
 
 final class CommissionFeeService

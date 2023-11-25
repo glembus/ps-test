@@ -2,7 +2,7 @@
 
 namespace App\Service\DataProvider;
 
-use App\Service\DataTransferObject\TransactionInterface;
+use App\Service\DataContract\TransactionInterface;
 use App\Service\TransactionDataBuilder;
 
 class CsvDataAdapter implements DataAdapterInterface
@@ -15,7 +15,7 @@ class CsvDataAdapter implements DataAdapterInterface
 
 		$transactionBuilder = new TransactionDataBuilder();
 		$transactionBuilder
-			->setDate(date_create_from_format('Y-m-d', $transactionData[0]))
+			->setDate(new \DateTime($transactionData[0]))
 			->setUserId($transactionData[1])
 			->setType($transactionData[2])
 			->setDirection($transactionData[3])

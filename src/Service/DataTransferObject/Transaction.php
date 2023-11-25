@@ -2,8 +2,12 @@
 
 namespace App\Service\DataTransferObject;
 
+use App\Service\DataContract\ExchangeRateInterface;
+use App\Service\DataContract\TransactionInterface;
+
 final class Transaction implements TransactionInterface
 {
+    /** @var array<string>  */
 	public static array $availableTypes = [self::TYPE_BUSINESS, self::TYPE_PRIVATE];
 
 	public function __construct(
@@ -46,7 +50,7 @@ final class Transaction implements TransactionInterface
 		return $this->direction;
 	}
 
-	public function convert(ExchangeRate $rate): static
+	public function convert(ExchangeRateInterface $rate): static
 	{
 		return new self(
 			type: $this->type,

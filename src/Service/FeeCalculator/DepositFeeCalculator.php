@@ -2,7 +2,7 @@
 
 namespace App\Service\FeeCalculator;
 
-use App\Service\DataTransferObject\FeeInterface;
+use App\Service\DataContract\FeeInterface;
 
 class DepositFeeCalculator extends AbstractFeeCalculator
 {
